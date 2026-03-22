@@ -1,35 +1,57 @@
-/* Esto es lo que Tailwind nos ahorrará después */
-html {
-    box-sizing: border-box;
-    background: #0000004d;
+/* ============================================================
+   LogiRuta — style.css
+   Estilos complementarios a Tailwind CSS
+   Estética: Eco-Friendly / Minimalista
+   ============================================================ */
+
+/* Fondo texturizado sutil — evoca papel natural */
+body {
+    background-color: #f5f0e8;
+    background-image:
+        radial-gradient(circle at 20% 20%, rgba(82, 183, 136, 0.06) 0%, transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(160, 120, 80, 0.05) 0%, transparent 60%);
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-}
-.input-field {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    height: 36px;
-    width: 142px;
+/* Scrollbar personalizada — tono tierra */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f5f0e8; }
+::-webkit-scrollbar-thumb { background: #c8bfb0; border-radius: 3px; }
+
+/* Animación de entrada para las filas de la tabla */
+#tabla-cargas tr {
+    animation: fadeSlideIn 0.3s ease forwards;
 }
 
-#btn {
-    height: 36px;
-    padding: 0px 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    cursor: pointer;
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-#btn:hover {
-    border: 1px solid #8cf885;
-    scale: 1.02
+/* Animación de entrada para el bloque de resultado final */
+#resultado-final {
+    animation: fadeIn 0.4s ease;
 }
 
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
 
+/* Focus ring personalizado en los inputs */
+input[type="number"]:focus {
+    box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.2);
+}
 
+/* Ocultar flechas de los inputs numéricos */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] { -moz-appearance: textfield; }

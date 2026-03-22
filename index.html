@@ -3,69 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fuel Pulse - Calculadora Futurista</title>
-    
+    <title>LogiRuta - Bitácora de Viaje</title>
+
+    <!-- Google Fonts: DM Serif Display + DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#050509',
-                        electricBlue: '#00f2fe',
-                        neonPurple: '#4facfe',
+                        leaf:    '#2d6a4f',
+                        leafLight: '#52b788',
+                        leafPale:  '#d8f3dc',
+                        bark:    '#a07850',
+                        sand:    '#f5f0e8',
+                        stone:   '#e8e2d9',
                     },
-                    boxShadow: {
-                        'neon-blue': '0 0 15px rgba(0, 242, 254, 0.5)',
-                        'neon-card': '0 0 25px rgba(79, 172, 254, 0.2)',
+                    fontFamily: {
+                        serif: ['"DM Serif Display"', 'serif'],
+                        sans:  ['"DM Sans"', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="bg-darkBg text-gray-200 min-h-screen flex items-center justify-center p-4 font-sans antialiased">
+<body class="bg-sand font-sans text-gray-700 min-h-screen flex items-start justify-center py-12 px-4">
 
-    <div class="w-full max-w-md bg-white/5 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-neon-card">
-        
-        <h1 class="text-3xl font-extrabold text-center mb-8 tracking-widest uppercase">
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-neonPurple to-electricBlue">
-                Fuel Pulse
-            </span>
-        </h1>
-        
-        <p class="text-center text-gray-400 mb-8 text-sm">Cálculo de Consumo Inteligente</p>
+    <div class="w-full max-w-xl">
 
-        <form id="calc-form" class="flex flex-col gap-6">
-            
-            <div class="relative">
-                <label class="text-xs text-electricBlue uppercase tracking-wider pl-1 mb-1 block">Kilómetros Iniciales</label>
-                <input type="number" id="km-inicio" placeholder="0.0" required
-                    class="w-full bg-black/30 border border-gray-700 text-white rounded-lg px-4 py-3 text-lg placeholder:text-gray-600 focus:outline-none focus:border-electricBlue focus:ring-1 focus:ring-electricBlue focus:shadow-neon-blue transition duration-300">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 mb-3">
+                <span class="text-3xl">🌿</span>
+                <h1 class="font-serif text-4xl text-leaf">LogiRuta</h1>
             </div>
+            <p class="text-sm text-gray-400 tracking-widest uppercase">Bitácora de Consumo de Combustible</p>
+        </header>
 
-            <div class="relative">
-                <label class="text-xs text-electricBlue uppercase tracking-wider pl-1 mb-1 block">Kilómetros Finales</label>
-                <input type="number" id="km-fin" placeholder="0.0" required
-                    class="w-full bg-black/30 border border-gray-700 text-white rounded-lg px-4 py-3 text-lg placeholder:text-gray-600 focus:outline-none focus:border-electricBlue focus:ring-1 focus:ring-electricBlue focus:shadow-neon-blue transition duration-300">
+        <!-- Tarjeta principal -->
+        <div class="bg-white rounded-3xl shadow-sm border border-stone p-8 mb-6">
+
+            <h2 class="font-serif text-xl text-gray-600 mb-6">Registrar Carga</h2>
+
+            <div class="flex flex-col gap-5">
+
+                <!-- Kilometraje -->
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-widest text-leafLight mb-2">
+                        Kilometraje Actual (km)
+                    </label>
+                    <input
+                        type="number"
+                        id="input-km"
+                        placeholder="Ej: 45320"
+                        class="w-full border border-stone rounded-xl px-4 py-3 text-gray-800 bg-sand placeholder:text-gray-300 focus:outline-none focus:border-leafLight focus:ring-2 focus:ring-leafPale transition"
+                    >
+                </div>
+
+                <!-- Litros -->
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-widest text-leafLight mb-2">
+                        Litros Cargados (L)
+                    </label>
+                    <input
+                        type="number"
+                        id="input-litros"
+                        placeholder="Ej: 45.00"
+                        step="0.01"
+                        class="w-full border border-stone rounded-xl px-4 py-3 text-gray-800 bg-sand placeholder:text-gray-300 focus:outline-none focus:border-leafLight focus:ring-2 focus:ring-leafPale transition"
+                    >
+                </div>
+
+                <!-- Mensaje de error -->
+                <p id="msg-error" class="hidden text-sm text-red-400 bg-red-50 border border-red-100 rounded-xl px-4 py-2"></p>
+
+                <!-- Botón Agregar -->
+                <button
+                    id="btn-agregar"
+                    class="w-full bg-leaf text-white font-semibold tracking-wide rounded-xl py-3 hover:bg-leafLight transition active:scale-[0.98]"
+                >
+                    + Agregar Carga
+                </button>
             </div>
+        </div>
 
-            <div class="relative">
-                <label class="text-xs text-electricBlue uppercase tracking-wider pl-1 mb-1 block">Litros Cargados</label>
-                <input type="number" id="litros" placeholder="0.0" step="0.01" required
-                    class="w-full bg-black/30 border border-gray-700 text-white rounded-lg px-4 py-3 text-lg placeholder:text-gray-600 focus:outline-none focus:border-electricBlue focus:ring-1 focus:ring-electricBlue focus:shadow-neon-blue transition duration-300">
+        <!-- Lista de cargas registradas -->
+        <div id="seccion-cargas" class="hidden mb-6">
+            <h2 class="font-serif text-xl text-gray-600 mb-4 pl-1">Cargas Registradas</h2>
+
+            <div class="bg-white rounded-3xl border border-stone shadow-sm overflow-hidden">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-leafPale text-leaf text-xs uppercase tracking-wider">
+                            <th class="py-3 px-5 text-left font-semibold">#</th>
+                            <th class="py-3 px-5 text-left font-semibold">Kilometraje</th>
+                            <th class="py-3 px-5 text-left font-semibold">Litros</th>
+                            <th class="py-3 px-5 text-left font-semibold">Parcial</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-cargas">
+                        <!-- Las filas se generan dinámicamente desde script.js -->
+                    </tbody>
+                </table>
             </div>
+        </div>
 
-            <button type="submit" 
-                class="w-full mt-4 bg-gradient-to-r from-neonPurple to-electricBlue text-darkBg font-bold uppercase tracking-widest py-4 rounded-lg hover:from-electricBlue hover:to-neonPurple transform hover:scale-[1.02] transition duration-300 shadow-neon-blue active:scale-[0.98]">
-                Analizar Consumo
+        <!-- Botón Finalizar Viaje -->
+        <div id="seccion-finalizar" class="hidden mb-6">
+            <button
+                id="btn-finalizar"
+                class="w-full bg-bark text-white font-semibold tracking-wide rounded-xl py-4 hover:opacity-90 transition active:scale-[0.98] shadow-sm"
+            >
+                🏁 Finalizar Viaje y Calcular
             </button>
-        </form>
+        </div>
 
-        <div id="resultado" class="mt-8 text-center min-h-[50px] transition-all duration-500">
+        <!-- Resultado final -->
+        <div id="resultado-final" class="hidden">
+            <div class="bg-leaf text-white rounded-3xl p-8 text-center shadow-md">
+                <p class="text-leafPale text-xs uppercase tracking-widest mb-4">Resumen del Viaje</p>
+                <div class="grid grid-cols-3 gap-6 mb-6">
+                    <div>
+                        <p class="text-leafPale text-xs mb-1">Distancia</p>
+                        <p id="res-distancia" class="text-2xl font-serif">—</p>
+                        <p class="text-leafPale text-xs">km</p>
+                    </div>
+                    <div>
+                        <p class="text-leafPale text-xs mb-1">Total Cargado</p>
+                        <p id="res-litros" class="text-2xl font-serif">—</p>
+                        <p class="text-leafPale text-xs">litros</p>
+                    </div>
+                    <div>
+                        <p class="text-leafPale text-xs mb-1">Consumo</p>
+                        <p id="res-consumo" class="text-2xl font-serif">—</p>
+                        <p class="text-leafPale text-xs">L/100km</p>
+                    </div>
+                </div>
+                <button
+                    id="btn-nuevo-viaje"
+                    class="bg-white text-leaf font-semibold px-6 py-2 rounded-full text-sm hover:bg-leafPale transition"
+                >
+                    Nuevo Viaje
+                </button>
             </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center text-xs text-gray-300 mt-10">LogiRuta © 2025 · Herramienta para choferes</footer>
     </div>
 
     <script src="script.js"></script>
