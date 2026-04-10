@@ -213,7 +213,31 @@ btnFinalizar.addEventListener('click', function() {
     resConsumo.textContent   = consumo.toFixed(2);
 
     resultadoFinal.classList.remove('hidden');
+    // Guardar en la base de datos
+const payload = {
+    km_inicial:   registros[0].km,
+    km_final:     registros[registros.length - 1].km,
+    distancia_km: distanciaTotal,
+    litros_total: litrosTotales,
+    consumo_l100: parseFloat(consumo.toFixed(2)),
+    cargas: registros.map(function(r, i) {
+        return {
+            nro_carga:  i + 1,
+            km:         r.km,
+            litros:     r.litros,
+            km_parcial: i === 0 ? null : r.km - registros[i - 1].km
+        };
+    })
+};
 
+fetch('http://localhost:3000/api/viajes', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload)
+})
+.then(res => res.json())
+.then(data => console.log('✅ Viaje guardado en BD:', data))
+.catch(err => console.error('❌ Error al guardar:', err));
     // Hacemos scroll suave hacia el resultado
     resultadoFinal.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
