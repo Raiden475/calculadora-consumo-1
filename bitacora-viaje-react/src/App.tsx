@@ -1,4 +1,17 @@
+import type { Trip } from './models/types'
+import { calculateStatics } from './utils/calculations'
+
 function App() {
+  const exampleTrip: Trip = {
+    initKm: 10000,
+    loads: [
+      { km: 10400, liters: 30 },
+      { km: 10850, liters: 35 }
+    ]
+  };
+
+  const results = calculateStatics(exampleTrip);
+
   return (
     <div className="bg-sand font-sans text-gray-700 min-h-screen flex items-start justify-center py-12 px-4">
       <div className="w-full max-w-xl">
@@ -17,7 +30,6 @@ function App() {
           <h2 className="font-serif text-xl text-gray-600 mb-6">Registrar Carga</h2>
           <div className="flex flex-col gap-5">
 
-            {/* Kilometraje */}
             <div>
               <label className="block text-xs font-semibold uppercase tracking-widest text-leafLight mb-2">
                 Kilometraje Actual (km)
@@ -29,7 +41,6 @@ function App() {
               />
             </div>
 
-            {/* Litros */}
             <div>
               <label className="block text-xs font-semibold uppercase tracking-widest text-leafLight mb-2">
                 Litros Cargados (L)
@@ -42,7 +53,6 @@ function App() {
               />
             </div>
 
-            {/* Botón Agregar */}
             <button className="w-full bg-leaf text-white font-semibold tracking-wide rounded-xl py-3 hover:bg-leafLight transition active:scale-[0.98]">
               + Agregar Carga
             </button>
@@ -52,6 +62,11 @@ function App() {
         {/* Tabla de cargas */}
         <div className="mb-6">
           <h2 className="font-serif text-xl text-gray-600 mb-4 pl-1">Cargas Registradas</h2>
+
+          <label className="w-full flex flex-row align-center justify-start mb-1">
+            Móvil inicia con: <span className="px-4 font-bold">{exampleTrip.initKm?.toFixed(2)} km</span>
+          </label>
+
           <div className="bg-white rounded-3xl border border-stone shadow-sm overflow-hidden">
             <table className="w-full text-sm">
               <thead>
@@ -62,12 +77,17 @@ function App() {
                   <th className="py-3 px-5 text-left font-semibold">Parcial</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr className="border-t border-stone-100">
-                  <td className="py-3 px-5 text-gray-400 font-mono text-xs" colSpan={4}>
-                    Sin cargas registradas
-                  </td>
-                </tr>
+              <tbody id="tabla-historial">
+                {exampleTrip.loads.map((load, index) => (
+                  <tr key={index} className="border-b border-stone-100">
+                    <td className="py-3 px-5 text-gray-400 font-mono text-xs">{index + 1}</td>
+                    <td className="py-3 px-5 font-medium text-gray-700">{load.km} km</td>
+                    <td className="py-3 px-5 text-gray-600">{load.liters} L</td>
+                    <td className="py-3 px-5 text-green-600 text-xs font-medium">
+                      {index === 0 ? 'Inicio' : `${load.km - exampleTrip.loads[index - 1].km} km`}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -79,6 +99,14 @@ function App() {
             🏁 Finalizar Viaje y Calcular
           </button>
         </div>
+
+        {/* Resultado */}
+        {results && (
+          <div className="mt-4 p-4 bg-green-100 text-green-700 rounded-lg text-sm">
+            <p>Distancia: {results.totalDistance} km</p>
+            <p>Promedio: {results.averageConsumption.toFixed(2)} L/100km</p>
+          </div>
+        )}
 
         {/* Footer */}
         <footer className="text-center text-xs text-gray-300 mt-10">
