@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+@theme {
+  --color-leaf: #2d6a4f;
+  --color-leafLight: #52b788;
+  --color-leafPale: #d8f3dc;
+  --color-bark: #a07850;
+  --color-sand: #f5f0e8;
+  --color-stone: #e8e2d9;
+}
