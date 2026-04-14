@@ -18,9 +18,9 @@ calculadora-consumo-1/
 │   │   ├── models/types.ts         ← Interfaces TypeScript
 │   │   ├── utils/calculations.ts   ← Lógica de cálculo
 │   │   └── App.tsx                 ← Componente principal
-└── backend/                ← API REST Node.js
-├── db.js               ← Conexión a MariaDB
-└── server.js           ← Endpoints REST
+└── backend/                        ← API REST Node.js
+├── db.js                           ← Conexión a MariaDB
+└── server.js                       ← Endpoints REST
 
 ## Cómo correr el proyecto
 
