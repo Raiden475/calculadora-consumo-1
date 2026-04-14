@@ -12,15 +12,19 @@ Aplicación web para registrar y calcular el consumo de combustible de vehículo
 
 ## Estructura del proyecto
 
+```
 calculadora-consumo-1/
-├── bitacora-viaje-react/   ← Frontend React
-│   ├── src/
-│   │   ├── models/types.ts         ← Interfaces TypeScript
-│   │   ├── utils/calculations.ts   ← Lógica de cálculo
-│   │   └── App.tsx                 ← Componente principal
-└── backend/                        ← API REST Node.js
-├── db.js                           ← Conexión a MariaDB
-└── server.js                       ← Endpoints REST
+├── bitacora-viaje-react/        ← Frontend React
+│   └── src/
+│       ├── models/
+│       │   └── types.ts         ← Interfaces TypeScript
+│       ├── utils/
+│       │   └── calculations.ts  ← Lógica de cálculo
+│       └── App.tsx              ← Componente principal
+└── backend/                     ← API REST Node.js
+    ├── db.js                    ← Conexión a MariaDB
+    └── server.js                ← Endpoints REST
+```
 
 ## Cómo correr el proyecto
 
